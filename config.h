@@ -22,6 +22,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //#define USE_MATRIX_I2C
 
+/* USB Device descriptor parameter */
+#define VENDOR_ID    0x4653
+#define PRODUCT_ID   0x0001
+#define DEVICE_VER   0x0001
+#define MANUFACTURER foostan
+#define PRODUCT      Corne
+/* For Raw HId */
+#define RAW_USAGE_PAGE 0xFF60
+#define RAW_USAGE_ID 0x61
+
 /* Select hand configuration */
 
 #define MASTER_LEFT

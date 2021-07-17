@@ -1,1 +1,2 @@
 OLED_DRIVER_ENABLE  = yes
+RAW_ENABLE = yes
