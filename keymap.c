@@ -31,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  FR_AMPR, FR_AT, FR_EXLM, FR_LBRC, FR_RBRC, FR_PIPE, FR_HASH, FR_7, FR_8, FR_9, FR_BSLS, FR_CIRC,
  FR_SCLN, FR_ASTR, FR_DQUO, FR_LPRN, FR_RPRN, FR_SLSH, FR_EQL, FR_4, FR_5, FR_6, FR_PLUS, FR_GRV,
  FR_TILD, FR_PERC, FR_MINS, FR_LCBR, FR_RCBR, FR_UNDS, FR_0, FR_1, FR_2, FR_3, FR_QUES, TO(2),
- KC_LT, KC_GT, KC_SPC, KC_ENT, LSFT_T(KC_TAB), KC_LALT),
+ FR_LABK, FR_RABK, KC_SPC, KC_ENT, LSFT_T(KC_TAB), KC_LALT),
 	[2] = LAYOUT_split_3x6_3(
  KC_LALT, KC_A, KC_Z, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
  C_S_T(KC_ESC), KC_Q, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_M, KC_QUOT,
@@ -54,21 +54,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_LGUI, KC_TRNS, KC_SPC, KC_ENT, KC_TRNS, KC_RALT)
 };
 
-#ifdef RAW_ENABLE
-/* raw hid */
-void raw_hid_receive(uint8_t *data, uint8_t length) {
-    raw_hid_send(data, length);
-}
-#endif // RAW_ENABLE
 
 #ifdef OLED_DRIVER_ENABLE
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (!is_keyboard_master()) {
     return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
   }
   return rotation;
 }
-
 #define L_BASE 0
 #define L_LOWER 2
 #define L_RAISE 4
@@ -94,6 +88,16 @@ void oled_render_layer_state(void) {
             break;
     }
 }
+
+/* #ifdef RAW_ENABLE */
+/* raw hid */
+void raw_hid_receive(uint8_t *data, uint8_t length) {
+    /*char str[] = data;*/
+    oled_write_ln_P(PSTR("Test"), false);
+    raw_hid_send(data, length);
+}
+/* #endif // RAW_ENABLE */
+
 
 
 char keylog_str[24] = {};
