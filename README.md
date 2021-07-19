@@ -25,3 +25,6 @@ Perform this task for each half keyboard.
 qmk flash -kb crkbd/rev1 -km NicolasCapon
 ```
 
+## TODO
+-  Modify layout indicator on OLED
+-  Implement Raw HID
