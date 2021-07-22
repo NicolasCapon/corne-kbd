@@ -68,33 +68,44 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   }
   return rotation;
 }
-#define L_BASE 0
-#define L_LOWER 2
-#define L_RAISE 4
-#define L_ADJUST 8
+#define L_FR 0
+#define L_FR_SYMB 1
+#define L_EN 2
+#define L_EN_SYMB 3
+#define L_FN 4
+#define L_MOUSE 5
+#define L_ACCENT 6
 
 void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
-    switch (layer_state) {
-        case L_BASE:
-            oled_write_ln_P(PSTR("Default"), false);
+    switch (get_highest_layer(layer_state)) {
+        case L_FR:
+            oled_write_ln_P(PSTR("French"), false);
             break;
-        case L_LOWER:
-            oled_write_ln_P(PSTR("Lower"), false);
+        case L_FR_SYMB:
+            oled_write_ln_P(PSTR("French Sym"), false);
             break;
-        case L_RAISE:
-            oled_write_ln_P(PSTR("Raise"), false);
+        case L_EN:
+            oled_write_ln_P(PSTR("English"), false);
             break;
-        case L_ADJUST:
-        case L_ADJUST|L_LOWER:
-        case L_ADJUST|L_RAISE:
-        case L_ADJUST|L_LOWER|L_RAISE:
-            oled_write_ln_P(PSTR("Adjust"), false);
+        case L_EN_SYMB:
+            oled_write_ln_P(PSTR("English Sym"), false);
             break;
+        case L_FN:
+            oled_write_ln_P(PSTR("Functions"), false);
+            break;
+        case L_MOUSE:
+            oled_write_ln_P(PSTR("Mouse & LED"), false);
+            break;
+        case L_ACCENT:
+            oled_write_ln_P(PSTR("Accents"), false);
+            break;
+        default:
+            oled_write_ln_P(PSTR("Undefined"), false);
     }
 }
 
-/* #ifdef RAW_ENABLE */
+#ifdef RAW_ENABLE
 /* raw hid */
 void raw_hid_receive(uint8_t *data, uint8_t length) {
     /*char str[] = data;*/
@@ -103,7 +114,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     oled_write_pixel(data[0], 8, true);
     raw_hid_send(data, length);
 }
-/* #endif // RAW_ENABLE */
+#endif // RAW_ENABLE
 
 
 

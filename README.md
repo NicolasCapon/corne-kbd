@@ -1,5 +1,5 @@
 # Corne keyboard layout
-Personnal corne layout with french keycodes based on default layout.
+Personnal corne layout with [french keycodes](https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keymap_french.h) based on default layout.
 
 ## QMK
 
@@ -14,6 +14,14 @@ cd qmk-firmware/crkbd/keymaps
 git clone https://github.com/NicolasCapon/corne-kbd.git NicolasCapon
 ```
 
+## Customization
+### Logo
+Use canvas size to 128x32 pixels and load the logo using [image2cpp](https://javl.github.io/image2cpp/)
+```
+Code output format: plain bytes
+Draw mode: Vertical, 1 bite per pixel
+```
+
 ## Compile
 ```
 qmk compile -kb crkbd/rev1 -km NicolasCapon
@@ -26,5 +34,4 @@ qmk flash -kb crkbd/rev1 -km NicolasCapon
 ```
 
 ## TODO
--  Modify layout indicator on OLED
 -  Implement Raw HID
