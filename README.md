@@ -13,6 +13,10 @@ sudo pacman -S qmk
 cd qmk-firmware/crkbd/keymaps
 git clone https://github.com/NicolasCapon/corne-kbd.git NicolasCapon
 ```
+Configure QMK
+```
+qmk config user.keyboard=crkbd/rev1 && qmk config user.keymap=NicolasCapon
+```
 
 ## Customization
 ### Logo
@@ -24,13 +28,13 @@ Draw mode: Vertical, 1 bite per pixel
 
 ## Compile
 ```
-qmk compile -kb crkbd/rev1 -km NicolasCapon
+qmk compile
 ```
 
 ## Flash
 Perform this task for each half keyboard.
 ```
-qmk flash -kb crkbd/rev1 -km NicolasCapon
+qmk flash
 ```
 
 ## TODO
