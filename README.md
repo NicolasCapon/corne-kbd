@@ -10,7 +10,7 @@ sudo pacman -S qmk
 
 ## Download layout
 ```
-cd qmk-firmware/crkbd/keymaps
+cd qmk-firmware/keyboards/crkbd/keymaps
 git clone https://github.com/NicolasCapon/corne-kbd.git NicolasCapon
 ```
 Configure QMK
