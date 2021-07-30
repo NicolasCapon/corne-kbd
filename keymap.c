@@ -71,9 +71,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (!is_keyboard_master()) {
-    return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
+    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
   }
-  return rotation;
+  return OLED_ROTATION_270;
 }
 #define L_FR 0
 #define L_FR_SYMB 1
@@ -84,7 +84,6 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 #define L_ACCENT 6
 
 void oled_render_layer_state(void) {
-    oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
         case L_FR:
             oled_write_ln_P(PSTR("Fr"), false);
