@@ -24,10 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	// French letters
 	[0] = LAYOUT_split_3x6_3(
- KC_LALT, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, LT(6, KC_DEL),
- C_S_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, FR_M, FR_QUOT,
+ LALT_T(KC_BSPC), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
+ C_S_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, FR_M, LT(6, FR_QUOT),
  KC_NO, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, FR_DOT, LCTL_T(FR_COMM), FR_COLN, LT(4,FR_DLR), TO(5),
- KC_LGUI, LCTL_T(KC_BSPC), KC_SPC, LT(1,KC_ENT), LSFT_T(KC_TAB), KC_LALT),
+ KC_LGUI, LCTL_T(KC_SPC), KC_SPC, LT(1,KC_ENT), LSFT_T(KC_TAB), LALT_T(KC_BSPC)),
 	// French symbols
 	[1] = LAYOUT_split_3x6_3(
  FR_AMPR, FR_AT, FR_EXLM, FR_LBRC, FR_RBRC, FR_PIPE, FR_HASH, FR_7, FR_8, FR_9, FR_BSLS, FR_CIRC,
@@ -36,22 +36,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  FR_LABK, FR_RABK, KC_SPC, KC_ENT, LSFT_T(KC_TAB), KC_LALT),
 	// English letters
 	[2] = LAYOUT_split_3x6_3(
- KC_LALT, KC_A, KC_Z, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
+ LALT_T(KC_BSPC), KC_A, KC_Z, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
  C_S_T(KC_ESC), KC_Q, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_M, KC_QUOT,
  KC_NO, KC_W, KC_X, KC_C, KC_V, KC_B, KC_N, KC_DOT, LCTL_T(KC_COMM), KC_COLN, LT(4,KC_DLR), KC_TRNS,
- KC_LGUI, LCTL_T(KC_BSPC), KC_SPC, LT(3,KC_ENT), LSFT_T(KC_TAB), KC_RALT),
+ KC_LGUI, LCTL_T(KC_BSPC), KC_SPC, LT(3,KC_ENT), LSFT_T(KC_TAB), LALT_T(KC_BSPC)),
 	// English symbols
 	[3] = LAYOUT_split_3x6_3(
  KC_AMPR, KC_AT, KC_EXLM, KC_LBRC, KC_RBRC, KC_PIPE, KC_HASH, KC_7, KC_8, KC_9, KC_BSLS, KC_CIRC,
  KC_SCLN, KC_ASTR, KC_DQUO, KC_LPRN, KC_RPRN, KC_SLSH, KC_EQL, KC_4, KC_5, KC_6, KC_PLUS, KC_GRV,
  KC_TILD, KC_PERC, KC_MINS, KC_LCBR, KC_RCBR, KC_UNDS, KC_0, KC_1, KC_2, KC_3, KC_QUES, TO(0),
- KC_LT, KC_GT, KC_SPC, KC_NO, LSFT_T(KC_TAB), KC_RALT),
+ KC_LT, KC_GT, KC_SPC, KC_NO, LSFT_T(KC_TAB), LALT_T(KC_BSPC)),
 	// Functions keys and arrows
 	[4] = LAYOUT_split_3x6_3(
  KC_TAB, KC_PGUP, KC_AT, KC_UP, KC_DLR, KC_PERC, KC_F12, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO,
  KC_LCTL, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO, KC_F11, KC_F4, KC_F5, KC_F6, KC_NO, KC_NO,
- KC_LSFT, KC_PSCR, KC_NO, KC_NO, KC_NO, KC_NO, KC_F10, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO,
- KC_LGUI, MO(3), KC_SPC, KC_ENT, KC_TRNS, KC_RALT),
+ KC_LSFT, KC_PSCR, KC_NO, KC_NO, LCTL(KC_LALT), KC_NO, KC_F10, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO,
+ KC_LGUI, LCTL_T(KC_SPC), KC_SPC, KC_ENT, KC_TRNS, KC_RALT),
 	// Mouse & RGB
 	[5] = LAYOUT_split_3x6_3(
  KC_WREF, KC_FIND, KC_WH_L, KC_MS_U, KC_WH_R, KC_WH_U, KC_ACL0, KC_ACL1, KC_ACL2, KC_NO, KC_NO, KC_NO,
@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (!is_keyboard_master()) {
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
+    return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
   }
   return rotation;
 }
@@ -87,25 +87,25 @@ void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
         case L_FR:
-            oled_write_ln_P(PSTR("French"), false);
+            oled_write_ln_P(PSTR("Fr"), false);
             break;
         case L_FR_SYMB:
-            oled_write_ln_P(PSTR("French Sym"), false);
+            oled_write_ln_P(PSTR("Fr S"), false);
             break;
         case L_EN:
-            oled_write_ln_P(PSTR("English"), false);
+            oled_write_ln_P(PSTR("En"), false);
             break;
         case L_EN_SYMB:
-            oled_write_ln_P(PSTR("English Sym"), false);
+            oled_write_ln_P(PSTR("En S"), false);
             break;
         case L_FN:
-            oled_write_ln_P(PSTR("Functions"), false);
+            oled_write_ln_P(PSTR("Fn"), false);
             break;
         case L_MOUSE:
-            oled_write_ln_P(PSTR("Mouse & LED"), false);
+            oled_write_ln_P(PSTR("Mo"), false);
             break;
         case L_ACCENT:
-            oled_write_ln_P(PSTR("Accents"), false);
+            oled_write_ln_P(PSTR("Acc"), false);
             break;
         default:
             oled_write_ln_P(PSTR("Undefined"), false);
@@ -122,36 +122,6 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     raw_hid_send(data, length);
 }
 #endif // RAW_ENABLE
-
-
-
-char keylog_str[24] = {};
-
-const char code_to_name[60] = {
-    ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
-    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-    'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\',
-    '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
-
-void set_keylog(uint16_t keycode, keyrecord_t *record) {
-  char name = ' ';
-    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
-        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
-  if (keycode < 60) {
-    name = code_to_name[keycode];
-  }
-
-  // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
-           record->event.key.row, record->event.key.col,
-           keycode, name);
-}
-
-void oled_render_keylog(void) {
-    oled_write(keylog_str, false);
-}
 
 void render_bootmagic_status(bool status) {
     /* Show Ctrl-Gui Swap options */
@@ -209,16 +179,8 @@ void oled_render_logo(void) {
 void oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_render_layer_state();
-         /* oled_render_keylog();*/
     } else {
         oled_render_logo();
     }
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    set_keylog(keycode, record);
-  }
-  return true;
 }
 #endif // OLED_DRIVER_ENABLE
