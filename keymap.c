@@ -21,13 +21,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keymap_french.h"
 #include "raw_hid.h"
 
+// Tap Dance declarations
+enum {
+    TD_BTN1_WH,
+    TD_BTN2_WH,
+};
+
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock
+    [TD_BTN1_WH] = ACTION_TAP_DANCE_DOUBLE(KC_BTN1, KC_WH_U),
+    [TD_BTN2_WH] = ACTION_TAP_DANCE_DOUBLE(KC_BTN2, KC_WH_D),
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	// French letters
 	[0] = LAYOUT_split_3x6_3(
- LALT_T(KC_BSPC), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
+ KC_BTN1, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
  C_S_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, FR_M, LT(6, FR_QUOT),
  KC_BTN2, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, FR_DOT, LCTL_T(FR_COMM), FR_COLN, LT(4,FR_DLR), TO(5),
- LGUI_T(KC_BTN1), LCTL_T(KC_BSPC), KC_SPC, LT(1,KC_ENT), LSFT_T(KC_TAB), LALT_T(KC_TAB)),
+ KC_LGUI, LCTL_T(KC_BSPC), KC_SPC, LT(1,KC_ENT), LSFT_T(KC_TAB), LALT_T(KC_TAB)),
 	// French symbols
 	[1] = LAYOUT_split_3x6_3(
  FR_AMPR, FR_AT, FR_EXLM, FR_LBRC, FR_RBRC, FR_PIPE, FR_HASH, FR_7, FR_8, FR_9, FR_BSLS, FR_CIRC,
