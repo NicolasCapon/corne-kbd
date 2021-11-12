@@ -22,15 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //#define USE_MATRIX_I2C
 
-/* USB Device descriptor parameter */
-#define VENDOR_ID    0x4653
-#define PRODUCT_ID   0x0001
-#define DEVICE_VER   0x0001
-#define MANUFACTURER foostan
-#define PRODUCT      Corne
-/* For Raw HId */
-#define RAW_USAGE_PAGE 0xFF60
-#define RAW_USAGE_ID 0x61
 
 /* Select hand configuration */
 
@@ -46,7 +37,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef RGBLIGHT_ENABLE
     #undef RGBLED_NUM
-    #define RGBLIGHT_ANIMATIONS
     #define RGBLED_NUM 27
     #define RGBLIGHT_LIMIT_VAL 120
     #define RGBLIGHT_HUE_STEP 10
@@ -55,3 +45,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+/* Windows... */
+#define KC_CAD	LALT(LCTL(KC_DEL))

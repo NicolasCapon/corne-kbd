@@ -19,31 +19,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include <stdio.h>
 #include "keymap_french.h"
-#include "raw_hid.h"
+#include "sendstring_french.h"
 
-// Tap Dance declarations
-enum {
-    TD_BTN1_WH,
-    TD_BTN2_WH,
+enum custom_keycodes {
+    PRENOM = SAFE_RANGE,
+    NOM,
+    POL1,
+    POL2,
+    POL3,
+    HELLO1,
+    HELLO2,
 };
 
-// Tap Dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Escape, twice for Caps Lock
-    [TD_BTN1_WH] = ACTION_TAP_DANCE_DOUBLE(KC_BTN1, KC_WH_U),
-    [TD_BTN2_WH] = ACTION_TAP_DANCE_DOUBLE(KC_BTN2, KC_WH_D),
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case PRENOM:
+        if (record->event.pressed) {
+            // when keycode QMKBEST is pressed
+            SEND_STRING("Nicolas");
+        } else {
+            // when keycode is released
+        }
+        break;
+
+    case NOM:
+        if (record->event.pressed) {
+            // when keycode QMKURL is pressed
+            SEND_STRING("Capon");
+        } else {
+            // when keycode is released
+        }
+        break;
+
+    case POL1:
+        if (record->event.pressed) {
+           SEND_STRING("Bien cordialement,\nNicolas Capon");
+        }
+        break;
+
+    case POL2:
+        if (record->event.pressed) {
+           SEND_STRING("Bien `a toi,\nNicolas");
+        }
+        break;
+
+    case POL3:
+        if (record->event.pressed) {
+           SEND_STRING("Bien `a vous,\nNicolas");
+        }
+        break;
+
+    case HELLO1:
+        if (record->event.pressed) {
+           SEND_STRING("Bonjour,\n");
+        }
+        break;
+
+    case HELLO2:
+        if (record->event.pressed) {
+           SEND_STRING("Salut,\n");
+        }
+        break;
+    }
+    return true;
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	// French letters
 	[0] = LAYOUT_split_3x6_3(
- KC_BTN1, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL,
+ KC_BTN1, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_MS_WH_UP,
  C_S_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, FR_M, LT(6, FR_QUOT),
- KC_BTN2, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, FR_DOT, LCTL_T(FR_COMM), FR_COLN, LT(4,FR_DLR), TO(5),
+ KC_BTN2, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, FR_DOT, LT(5,FR_COMM), FR_COLN, LT(4,FR_DLR), KC_MS_WH_DOWN,
  KC_LGUI, LCTL_T(KC_BSPC), KC_SPC, LT(1,KC_ENT), LSFT_T(KC_TAB), LALT_T(KC_TAB)),
 	// French symbols
 	[1] = LAYOUT_split_3x6_3(
- FR_AMPR, FR_AT, FR_EXLM, FR_LBRC, FR_RBRC, FR_PIPE, FR_HASH, FR_7, FR_8, FR_9, FR_BSLS, FR_CIRC,
+ FR_AMPR, FR_AT, FR_EXLM, FR_LBRC, FR_RBRC, FR_PIPE, FR_HASH, FR_7, FR_8, FR_9, FR_BSLS, KC_DEL,
  FR_SCLN, FR_ASTR, FR_DQUO, FR_LPRN, FR_RPRN, FR_SLSH, FR_EQL, FR_4, FR_5, FR_6, FR_PLUS, FR_GRV,
  FR_TILD, FR_PERC, FR_MINS, FR_LCBR, FR_RCBR, FR_UNDS, FR_0, FR_1, FR_2, FR_3, FR_QUES, TO(2),
  FR_LABK, FR_RABK, KC_SPC, KC_ENT, LSFT_T(KC_BSPC), LALT_T(KC_TAB)),
@@ -61,16 +111,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_LT, KC_GT, KC_SPC, KC_NO, LSFT_T(KC_BSPC), LALT_T(KC_TAB)),
 	// Functions keys and arrows
 	[4] = LAYOUT_split_3x6_3(
- KC_TAB, KC_PGUP, KC_AT, KC_UP, KC_DLR, KC_PERC, KC_F12, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO,
- KC_LCTL, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO, KC_F11, KC_F4, KC_F5, KC_F6, KC_NO, KC_NO,
- KC_LSFT, KC_PSCR, KC_NO, KC_NO, LCTL(KC_LALT), KC_NO, KC_F10, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO,
+ KC_CAD, KC_PGUP, KC_AT, KC_UP, KC_DLR, KC_PERC, KC_F12, KC_F7, KC_F8, KC_F9, KC_NO, RGB_HUI,
+ KC_LCTL, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO, KC_F11, KC_F4, KC_F5, KC_F6, KC_NO, RGB_TOG,
+ KC_LSFT, KC_PSCR, KC_NO, KC_NO, LCTL(KC_LALT), KC_NO, KC_F10, KC_F1, KC_F2, KC_F3, KC_NO, RGB_HUD,
  KC_LGUI, LCTL_T(KC_SPC), KC_SPC, KC_ENT, KC_TRNS, KC_RALT),
-	// Mouse & RGB
+	// Macros
 	[5] = LAYOUT_split_3x6_3(
- KC_WREF, KC_FIND, KC_WH_L, KC_MS_U, KC_WH_R, KC_WH_U, KC_ACL0, KC_ACL1, KC_ACL2, KC_NO, KC_NO, KC_NO,
- KC_WBAK, KC_BTN1, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_D, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, KC_NO, KC_NO, 
- KC_WFWD, KC_BTN2, KC_CUT, KC_COPY, KC_PSTE, KC_WSCH, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, KC_NO, TO(0), 
- KC_LGUI, KC_TRNS, KC_ENT, KC_ENT, KC_TRNS, KC_RALT),
+ HELLO2, KC_FIND, KC_NO, KC_NO, KC_NO, KC_NO, KC_ACL0, KC_ACL1, KC_ACL2, KC_NO, KC_NO, KC_NO,
+ HELLO1, POL3, POL2, POL1, PRENOM, NOM, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, KC_NO, KC_NO, 
+ KC_WREF, KC_WBAK, KC_CUT, KC_COPY, KC_PSTE, KC_WSCH, RGB_MOD, RGB_HUD, KC_NO, RGB_VAD, RGB_SAD, KC_NO, 
+ KC_LGUI, KC_TRNS, KC_SPC, KC_ENT, KC_TRNS, KC_RALT),
 	// French accents
 	[6] = LAYOUT_split_3x6_3(
  FR_SUP2, FR_AGRV, FR_EGRV, FR_EACU, FR_DIAE, FR_CIRC, FR_GRV, FR_UGRV, KC_NO, KC_NO, KC_NO, KC_NO,
@@ -123,17 +173,6 @@ void oled_render_layer_state(void) {
             oled_write_ln_P(PSTR("Undefined"), false);
     }
 }
-
-#ifdef RAW_ENABLE
-/* raw hid */
-void raw_hid_receive(uint8_t *data, uint8_t length) {
-    /*char str[] = data;*/
-    oled_clear();
-    oled_write_P((char *)(data), false);
-    oled_write_pixel(data[0], 8, true);
-    raw_hid_send(data, length);
-}
-#endif // RAW_ENABLE
 
 void render_bootmagic_status(bool status) {
     /* Show Ctrl-Gui Swap options */
