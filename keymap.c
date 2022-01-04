@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keymap_french.h"
 #include "sendstring_french.h"
 
+/* IDEAS:
+ * Leader key function by app. Ex: <$>mn for new mail ou $dw for deleting current word
+*/ 
 enum custom_keycodes {
     PRENOM = SAFE_RANGE,
     NOM,
@@ -28,7 +31,7 @@ enum custom_keycodes {
     POL2,
     POL3,
     HELLO1,
-    HELLO2,
+    CP_WSEARCH,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -54,12 +57,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case POL1:
         if (record->event.pressed) {
            SEND_STRING("Bien cordialement,\nNicolas Capon");
+           SEND_STRING(SS_LCTL("\n"));
         }
         break;
 
     case POL2:
         if (record->event.pressed) {
            SEND_STRING("Bien `a toi,\nNicolas");
+           SEND_STRING(SS_LCTL("\n"));
         }
         break;
 
@@ -75,20 +80,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 
-    case HELLO2:
+    case CP_WSEARCH:
         if (record->event.pressed) {
-           SEND_STRING("Salut,\n");
-        }
+           // Open new browser tab, paste and search
+           SEND_STRING(SS_LCTL("t") SS_DELAY(100) SS_LCTL("v") SS_TAP(X_ENTER));        }
         break;
     }
     return true;
 };
 
+bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
+    // To enable layer switch when key is tapped then tap-holded without repeating the letter
+    switch (keycode) {
+        case LT(6, FR_M):
+            return true;
+        default:
+            return false;
+    }
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	// French letters
 	[0] = LAYOUT_split_3x6_3(
  KC_BTN1, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_MS_WH_UP,
- C_S_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, FR_M, LT(6, FR_QUOT),
+ C_S_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, LT(6, FR_M), LT(5, FR_QUOT),
  KC_BTN2, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, FR_DOT, LT(5,FR_COMM), FR_COLN, LT(4,FR_DLR), KC_MS_WH_DOWN,
  KC_LGUI, LCTL_T(KC_BSPC), KC_SPC, LT(1,KC_ENT), LSFT_T(KC_TAB), LALT_T(KC_TAB)),
 	// French symbols
@@ -111,22 +126,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_LT, KC_GT, KC_SPC, KC_NO, LSFT_T(KC_BSPC), LALT_T(KC_TAB)),
 	// Functions keys and arrows
 	[4] = LAYOUT_split_3x6_3(
- KC_CAD, KC_PGUP, KC_AT, KC_UP, KC_DLR, KC_PERC, KC_F12, KC_F7, KC_F8, KC_F9, KC_NO, RGB_HUI,
+ KC_NO, KC_PGUP, KC_AT, KC_UP, KC_DLR, KC_PERC, KC_F12, KC_F7, KC_F8, KC_F9, KC_NO, RGB_HUI,
  KC_LCTL, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO, KC_F11, KC_F4, KC_F5, KC_F6, KC_NO, RGB_TOG,
  KC_LSFT, KC_PSCR, KC_NO, KC_NO, LCTL(KC_LALT), KC_NO, KC_F10, KC_F1, KC_F2, KC_F3, KC_NO, RGB_HUD,
  KC_LGUI, LCTL_T(KC_SPC), KC_SPC, KC_ENT, KC_TRNS, KC_RALT),
-	// Macros
+	// Desktop Navigation & Macros
 	[5] = LAYOUT_split_3x6_3(
- HELLO2, KC_FIND, KC_NO, KC_NO, KC_NO, KC_NO, KC_ACL0, KC_ACL1, KC_ACL2, KC_NO, KC_NO, KC_NO,
- HELLO1, POL3, POL2, POL1, PRENOM, NOM, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, KC_NO, KC_NO, 
- KC_WREF, KC_WBAK, KC_CUT, KC_COPY, KC_PSTE, KC_WSCH, RGB_MOD, RGB_HUD, KC_NO, RGB_VAD, RGB_SAD, KC_NO, 
- KC_LGUI, KC_TRNS, KC_SPC, KC_ENT, KC_TRNS, KC_RALT),
+ KC_PRINT_SCREEN, KC_FIND, LCA(KC_LEFT), LGUI(KC_2), LCA(KC_RIGHT), KC_F11, KC_ACL0, KC_ACL1, KC_ACL2, KC_NO, KC_NO, KC_NO,
+ HELLO1, KC_WBAK, LCTL(LGUI(KC_LEFT)), POL1, LCTL(LGUI(KC_RIGHT)), LCTL(KC_F11), RGB_TOG, RGB_HUI, RCS(KC_K), RGB_VAI, KC_NO, KC_NO, 
+ KC_WREF, CP_WSEARCH, LSFT(KC_DELETE), LCTL(KC_INSERT), LSFT(KC_INSERT), KC_WSCH, RGB_MOD, RGB_HUD, KC_NO, RGB_VAD, RGB_SAD, KC_NO, 
+ POL1, POL2, KC_MAIL, KC_ENT, LALT(KC_TAB), LCA(KC_TAB)),
 	// French accents
 	[6] = LAYOUT_split_3x6_3(
  FR_SUP2, FR_AGRV, FR_EGRV, FR_EACU, FR_DIAE, FR_CIRC, FR_GRV, FR_UGRV, KC_NO, KC_NO, KC_NO, KC_NO,
  KC_NO, KC_NO, KC_NO, FR_AMPR, FR_EURO, FR_PND, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
  KC_NO, KC_NO, KC_NO, FR_CCED, FR_SECT, FR_DEG, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
  KC_LGUI, KC_TRNS, KC_SPC, KC_ENT, KC_TRNS, KC_RALT)
+    // TODO: Layer for coding
 };
 
 
